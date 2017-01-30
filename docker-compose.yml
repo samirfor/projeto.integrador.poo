@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+
+  php:
+    build: docker/php
+    links:
+      - mysql
+    env_file:
+      - docker/mysql/mysql.env
+    volumes:
+      - ./public:/var/www/html
+      - ./public:/usr/share/nginx/html
+    depends_on:
+      - mysql
+    ports:
+      - "80:80"
+
+  mysql:
+    image: mysql:5
+    env_file:
+      - docker/mysql/mysql.env
+    volumes:
+      - ./db/01-database.sql:/docker-entrypoint-initdb.d/01-database.sql:ro
+    # ports:
+    #   - "3306:3306"
