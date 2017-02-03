@@ -4,6 +4,28 @@ ini_set('display_errors', 1);
 
 require 'repositorio_filmes.php';
 
+$acao = 'cadastrar';
+$filme = new Filme();
+$codigo = null;
+if (isset($_GET) && !empty($_GET)) {
+  $acao = $_GET['acao'];
+  switch ($acao) {
+    case 'remover':
+    case 'alterar':
+      $codigo = intval($_GET['codigo']);
+      if ($codigo > 0) {
+        $filme = $repositorio->buscarFilme(intval($_GET['codigo']));
+        if (!$filme) {
+          $filme = new Filme();
+          break;
+        }
+      }
+      break;
+    default:
+      break;
+  }
+}
+
 $filmes = $repositorio->getListaFilmes();
 
 ?>
@@ -52,27 +74,14 @@ $filmes = $repositorio->getListaFilmes();
       <div class="row">
         <div class="one-half column">
 
-          <h5>Cadastro de Filme:</h5>
+          <!-- <h5>Cadastro de Filme:</h5> -->
 
           <!-- The above form looks like this -->
-          <form method="post">
-            <div class="row">
-                <label for="titulo">Título</label>
-                <input class="u-full-width" type="text" name="titulo" id="titulo" >
-            </div>
-            <div class="row">
-                <label for="sinopse">Sinopse</label>
-                <textarea class="u-full-width" name="sinopse" id="sinopse"></textarea>
-            </div>
-            <div class="row">
-                <label for="quantidade">Quantidade</label>
-                <input class="u-full-width" type="number" name="quantidade" id="quantidade" >
-            </div>
-            <div class="row">
-                <label for="trailer">Trailer</label>
-                <input class="u-full-width" type="text" name="trailer" id="trailer" >
-            </div>
-            <input class="button-primary" type="submit" value="Cadastrar">
+          <form method="post" action="action_filme.php">
+            <?php include 'form_filme.php'; ?>
+            <input type="hidden" name="acao" value="<?php echo $acao; ?>">
+            <input type="hidden" name="codigo" value="<?php echo $codigo; ?>">
+            <input class="button-primary" type="submit" value="<?php echo ucfirst($acao); ?>">
           </form>
 
           <!-- Always wrap checkbox and radio inputs in a label and use a <span class="label-body"> inside of it -->
@@ -99,9 +108,9 @@ $filmes = $repositorio->getListaFilmes();
             <tbody>
               <?php foreach ($filmes as $filme) : ?>
               <tr>
-                <td><a class="button" href="index.php?acao=alterar">Alterar</a></td>
+                <td><a class="button" href="index.php?acao=alterar&codigo=<?php echo $filme->getCodigo(); ?>">Alterar</a></td>
                 <td><?php echo $filme->getTitulo(); ?></td>
-                <td><a class="button" href="index.php?acao=excluir">Excluir</a></td>
+                <td><a class="button" href="index.php?acao=remover&codigo=<?php echo $filme->getCodigo(); ?>">Remover</a></td>
               </tr>
               <?php endforeach ?>
             </tbody>

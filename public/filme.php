@@ -8,7 +8,7 @@ class Filme
   private $quantidade;
   private $trailer;
 
-  function __construct($titulo, $codigo, $sinopse, $quantidade, $trailer)
+  function __construct($titulo=null, $codigo=null, $sinopse=null, $quantidade=null, $trailer=null)
   {
     $this->titulo = $titulo;
     $this->codigo = $codigo;

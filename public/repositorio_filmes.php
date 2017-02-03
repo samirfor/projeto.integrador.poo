@@ -46,9 +46,10 @@ class RepositorioFilmesMySQL implements IRepositorioFilmes
   public function removerFilme($filme)
   {
     $sql = "DELETE FROM filme WHERE codigo=?;";
+    $codigo = $filme->getCodigo();
 
     if ($stmt = $this->conexao->getConexao()->prepare($sql)) {
-      $stmt->bind_param("i", $filme->getCodigo());
+      $stmt->bind_param("i", $codigo);
       $stmt->execute();
       $stmt->close();
       return true;
@@ -84,18 +85,19 @@ class RepositorioFilmesMySQL implements IRepositorioFilmes
     if ($stmt = $this->conexao->getConexao()->prepare($sql)) {
       $stmt->bind_param("i", $codigo);
       $stmt->execute();
-      if (!isset($stmt->get_result()[0])) {
+      $result = $stmt->get_result();
+      if (!$result || $result->num_rows < 1) {
         $stmt->close();
         return false;
       }
-      $result = $stmt->get_result()[0];
+      $filme = $result->fetch_object();
       $stmt->close();
       return new Filme(
-        $result['titulo'],
-        $result['codigo'],
-        $result['sinopse'],
-        $result['quantidade'],
-        $result['trailer']
+        $filme->titulo,
+        $filme->codigo,
+        $filme->sinopse,
+        $filme->quantidade,
+        $filme->trailer
       );
     }
     printf("Erro: %s\n", mysqli_error($this->conexao->getConexao()));
