@@ -2,44 +2,24 @@
 
 class Cliente
 {
-  private $idcliente;
-  private $nome_cliente;
+  private $nomeCliente;
   private $cpf;
   private $endereco;
-  private $data_cadastro;
-  private $saldo_devedor;
+  private $dataCadastro;
+  private $saldoDevedor;
+  private $situacaoDebito;
 
-  function __construct($idcliente, $nome_cliente, $cpf, $endereco, $data_cadastro)
+  function __construct($nomeCliente=null, $cpf=null, $endereco=null, $dataCadastro=null, $saldoDevedor=0, $situacaoDebito=null)
   {
-    $this->idcliente = $idcliente;
-    $this->nome_cliente = $nome_cliente;
+    $this->nomeCliente = $nomeCliente;
     $this->cpf = $cpf;
     $this->endereco = $endereco;
-    $this->data_cadastro = $data_cadastro;
-  }
-
-  /**
-   * Get the value of Idcliente
-   *
-   * @return mixed
-   */
-  public function getIdcliente()
-  {
-      return $this->idcliente;
-  }
-
-  /**
-   * Set the value of Idcliente
-   *
-   * @param mixed idcliente
-   *
-   * @return self
-   */
-  public function setIdcliente($idcliente)
-  {
-      $this->idcliente = $idcliente;
-
-      return $this;
+    $this->dataCadastro = $dataCadastro;
+    if (!$dataCadastro) {
+      $this->dataCadastro = date('Y-m-d');
+    }
+    $this->saldoDevedor = $saldoDevedor;
+    $this->situacaoDebito = $situacaoDebito;
   }
 
   /**
@@ -49,19 +29,19 @@ class Cliente
    */
   public function getNomeCliente()
   {
-      return $this->nome_cliente;
+      return $this->nomeCliente;
   }
 
   /**
    * Set the value of Nome Cliente
    *
-   * @param mixed nome_cliente
+   * @param mixed nomeCliente
    *
    * @return self
    */
-  public function setNomeCliente($nome_cliente)
+  public function setNomeCliente($nomeCliente)
   {
-      $this->nome_cliente = $nome_cliente;
+      $this->nomeCliente = $nomeCliente;
 
       return $this;
   }
@@ -121,19 +101,67 @@ class Cliente
    */
   public function getDataCadastro()
   {
-      return $this->data_cadastro;
+      return $this->dataCadastro;
   }
 
   /**
    * Set the value of Data Cadastro
    *
-   * @param mixed data_cadastro
+   * @param mixed dataCadastro
    *
    * @return self
    */
-  public function setDataCadastro($data_cadastro)
+  public function setDataCadastro($dataCadastro)
   {
-      $this->data_cadastro = $data_cadastro;
+      $this->dataCadastro = $dataCadastro;
+
+      return $this;
+  }
+
+  /**
+   * Get the value of Saldo Devedor
+   *
+   * @return mixed
+   */
+  public function getSaldoDevedor()
+  {
+      return $this->saldoDevedor;
+  }
+
+  /**
+   * Set the value of Saldo Devedor
+   *
+   * @param mixed saldoDevedor
+   *
+   * @return self
+   */
+  public function setSaldoDevedor($saldoDevedor)
+  {
+      $this->saldoDevedor = $saldoDevedor;
+
+      return $this;
+  }
+
+  /**
+   * Get the value of Situacao Debito
+   *
+   * @return mixed
+   */
+  public function getSituacaoDebito()
+  {
+      return $this->situacaoDebito;
+  }
+
+  /**
+   * Set the value of Situacao Debito
+   *
+   * @param mixed situacaoDebito
+   *
+   * @return self
+   */
+  public function setSituacaoDebito($situacaoDebito)
+  {
+      $this->situacaoDebito = $situacaoDebito;
 
       return $this;
   }
